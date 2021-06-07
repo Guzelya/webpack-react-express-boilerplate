@@ -20,7 +20,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.19.0",
+    "connect-session-sequelize": "^7.1.1",
     "express": "^4.17.1",
+    "express-session": "^1.17.2",
     "pg": "^8.6.0",
     "pg-hstore": "^2.3.3",
     "react": "^17.0.2",
