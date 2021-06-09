@@ -3,6 +3,7 @@ const { db } = require("./server/db/db");
 // const BloodType = require("./server/db/bloodType");
 const { Donor } = require("./server/db/models");
 const { BloodType } = require("./server/db/models");
+const { User } = require("./server/db/models");
 
 const seed = async () => {
   console.log("what is wrong?");
@@ -17,6 +18,7 @@ const seed = async () => {
     bloodQuantity: "250 ml",
     bloodBank: "True blood LLC, 999 Hell street, apt 666",
   };
+  await User.sync({ force: true });
   await Donor.sync({ force: true });
   await BloodType.sync({ force: true });
   const person1 = await Donor.create(person);

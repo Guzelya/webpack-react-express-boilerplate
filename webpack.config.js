@@ -4,7 +4,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 module.exports = {
   entry: "./client/index.js",
   output: {
-    path: path.resolve(__dirname, "dist"),
+    path: path.resolve(__dirname, "./dist"),
     filename: "bundle.js",
   },
   //   output: {
@@ -22,6 +22,20 @@ module.exports = {
   //     port: 8008,
   //   },
   mode: "development",
+  devtool: "source-map",
+  devServer: {
+    historyApiFallback: true,
+    watchContentBase: true,
+    // hot: true,
+    // hot: true,
+    // inline: true,
+    // host: "localhost",
+    // port: 3002,
+    // contentBase: "./dist",
+    watchOptions: {
+      poll: true,
+    },
+  },
   plugins: [
     new HtmlWebpackPlugin({
       template: "public/index.html",

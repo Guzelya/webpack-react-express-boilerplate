@@ -14,16 +14,17 @@ const router = require("express").Router();
 // router.use("/v1");
 
 // app.use("/v1", router);
+router.use("/login", require("./login"));
 
-router.get("/v1", (req, res, next) => {
-  try {
-    console.log("inside the router");
-    res.send("is it in router?");
-  } catch {
-    console.log("it's an error", error);
-    next(error);
-  }
-});
+// router.get("/v1", (req, res, next) => {
+//   try {
+//     console.log("inside the router");
+//     res.send("is it in router?");
+//   } catch {
+//     console.log("it's an error", error);
+//     next(error);
+//   }
+// });
 // app.use("/v1", router);
 
 module.exports = router;

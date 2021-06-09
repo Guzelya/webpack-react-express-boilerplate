@@ -7,6 +7,7 @@ const session = require("express-session");
 const { db } = require("./db/db");
 const SequelizeStore = require("connect-session-sequelize")(session.Store);
 const sessionStore = new SequelizeStore({ db });
+const passport = require("passport");
 // const volleyball = require("volleyball");
 
 const app = express();
@@ -28,7 +29,7 @@ app.use(express.static(path.join(__dirname, "../dist")));
 app.use("/api", require("./api"));
 
 // Send index.html for any other requests
-app.get("/", (req, res) => {
+app.get("/*", (req, res) => {
   res.sendFile(path.join(__dirname, "../dist/index.html"));
 });
 
@@ -65,10 +66,20 @@ app.use(
   // console.log("session connected!")
 );
 
-sessionStore.sync();
+// sessionStore.sync();
 // SyncSession();
 
-app.get("/v2", (req, res, next) => {
+require("../config/passport");
+app.use(passport.initialize());
+app.use(passport.session());
+
+// app.use((req, res, next) => {
+//   console.log("session in use", req.session);
+//   console.log("session in use user", req.user);
+//   next();
+// });
+
+app.get("/auth", (req, res, next) => {
   // res.cookie("remember me");
   // keep in mind!!! weird thing, session cookies are not seen in chrome and are not
   // inserted into the database until viewCount is trigerred
@@ -79,9 +90,10 @@ app.get("/v2", (req, res, next) => {
   }
   res.send(`you have visited this website ${req.session.viewCount} times`);
   console.log("in console session", req.sessionID, req.session.viewCount);
+  next();
 });
 
-// sessionStore.sync();
+sessionStore.sync();
 
 // error handling middleware should come last because middleware is executed from top to bottom
 // if there's an error it will catch on it. If it comes first it will show error even if there's no one
@@ -92,6 +104,7 @@ app.use((err, req, res, next) => {
   }
   console.error(err.stack);
   res.status(err.status || 500).send(err.message || "Internal server error");
+  next();
 });
 
 // sessionStore.sync();
