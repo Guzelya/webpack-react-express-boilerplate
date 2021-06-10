@@ -3,19 +3,21 @@ import axios from "axios";
 
 const Login = () => {
   const [values, setValues] = useState({});
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(`/api/login`);
-        console.log("response in a list", response.data);
-        setValues(response.data);
-        // setRestaurants(response.data.data.restaurants);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    fetchData();
-  }, []);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  //   useEffect(() => {
+  //     const fetchData = async () => {
+  //       try {
+  //         const response = await axios.get(`/api/register`);
+  //         console.log("response in a list", response.data);
+  //         setValues(response.data);
+  //         // setRestaurants(response.data.data.restaurants);
+  //       } catch (err) {
+  //         console.log(err);
+  //       }
+  //     };
+  //     fetchData();
+  //   }, []);
 
   // componentDidMount() {
   //     axios.get(`https://localhost:3002/api/login`)
@@ -38,28 +40,62 @@ const Login = () => {
   //     // e.preventDefault;
   //     console.log("we are here");
   //   };
+  const handleNewUser = async (e) => {
+    e.preventDefault;
+    console.log("we are in the ");
+    try {
+      const response = await axios.post(`/api/register`, {
+        email,
+        password,
+      });
+      console.log("response", response);
+      return response;
+    } catch (err) {
+      console.log(err);
+      return err;
+    }
+
+    // await axios
+    //   // .post("/api/register", {
+    //   //   email,
+    //   //   password,
+    //   // })
+    //   .get("/api/login")
+    //   .then(() => {
+    //     console.log("response");
+    //   });
+  };
+  const newFunction = () => {
+    console.log("in new function", email, password);
+  };
 
   return (
     <div>
-      <h1>please login</h1>
-      <p>{values.name}</p>
-      <button>get values</button>
+      <h1>please register</h1>
+      {/* <p>{values.name}</p> */}
       <form>
         <label>
-          Name:
-          <input type="text" name="name" />
+          Email:
+          <input
+            value={email}
+            type="text"
+            // name="email"
+            onChange={(e) => setEmail(e.target.value)}
+          />
         </label>
         <label>
           Password:
-          <input type="text" name="password" />
-        </label>
-        <label>
-          what else:
-          <input type="text" name="password" />
+          <input
+            type="text"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
         </label>
       </form>
-      {/* <p>Works</p> */}
-      {/* <p>works again</p> */}
+      <button type="submit" onClick={handleNewUser}>
+        register a new user
+      </button>
+      <button onClick={newFunction}>hello</button>
     </div>
   );
 };

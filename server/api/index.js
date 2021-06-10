@@ -14,7 +14,7 @@ const router = require("express").Router();
 // router.use("/v1");
 
 // app.use("/v1", router);
-router.use("/login", require("./login"));
+router.use("/", require("./login"));
 
 // router.get("/v1", (req, res, next) => {
 //   try {

@@ -1,5 +1,4 @@
 "use strict";
-
 const express = require("express");
 const path = require("path");
 const bodyParser = require("body-parser");
@@ -47,27 +46,46 @@ app.get("/*", (req, res) => {
 //   console.log(`server is on Port 18`);
 // });
 
-app.use(
-  // "/v2",
-  session({
-    // proxy: true,
-    secret: "connection session to database",
-    store: sessionStore,
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      // path: "/",
-      // secure: false,
-      maxAge: 1000 * 60 * 60 * 2,
-      // httpOnly: true,
-      // maxAge: null,
-    },
-  })
-  // console.log("session connected!")
-);
+// app.use(
+//   // "/v2",
+//   session({
+//     // proxy: true,
+//     secret: "connection session to database",
+//     store: sessionStore,
+//     resave: false,
+//     saveUninitialized: false,
+//     cookie: {
+//       // path: "/",
+//       // secure: false,
+//       maxAge: 1000 * 60 * 60 * 2,
+//       // httpOnly: true,
+//       // maxAge: null,
+//     },
+//   })
+//   // console.log("session connected!")
+// );
+
+// app.get("/session", (req, res, next) => {
+//   // res.cookie("remember me");
+//   // keep in mind!!! weird thing, session cookies are not seen in chrome and are not
+//   // inserted into the database until viewCount is trigerred
+//   // if (!req.session.viewCount) {
+//   //   req.session.viewCount = 1;
+//   // } else {
+//   //   req.session.viewCount++;
+//   // }
+//   // res.send(`you have visited this website ${req.session.viewCount} times`);
+//   // console.log("in console session", req.sessionID, req.session.viewCount);
+//   console.log("/session console log");
+//   next();
+// });
 
 // sessionStore.sync();
 // SyncSession();
+// const callFunction = function (req, res, next) {
+//   console.log("function called");
+//   next();
+// };
 
 require("../config/passport");
 app.use(passport.initialize());
@@ -78,20 +96,6 @@ app.use(passport.session());
 //   console.log("session in use user", req.user);
 //   next();
 // });
-
-app.get("/auth", (req, res, next) => {
-  // res.cookie("remember me");
-  // keep in mind!!! weird thing, session cookies are not seen in chrome and are not
-  // inserted into the database until viewCount is trigerred
-  if (!req.session.viewCount) {
-    req.session.viewCount = 1;
-  } else {
-    req.session.viewCount++;
-  }
-  res.send(`you have visited this website ${req.session.viewCount} times`);
-  console.log("in console session", req.sessionID, req.session.viewCount);
-  next();
-});
 
 sessionStore.sync();
 

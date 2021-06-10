@@ -4,16 +4,18 @@ import {
   Route,
   Link,
   Switch,
-  BrowserRouter as Router,
+  BrowserRouter,
 } from "react-router-dom";
 import Login from "./components/Login";
 import Home from "./components/Home";
 import Logout from "./components/Logout";
+import Auth from "./components/Auth";
 
 const App = () => {
   return (
     // <HashRouter>
-    <Router>
+    // <div>
+    <BrowserRouter>
       {/* <div> */}
       {/* <h1>
         Hello world!Jupiter and Mars and Venus and Moon and Uranus and all the
@@ -24,14 +26,17 @@ const App = () => {
           <Login />
         </Route> */}
       <Route exact path="/login" component={Login} />
+      <Link to="/login">Login</Link>
+      <Route exact path="/auth" component={Auth} />
+      <Link to="/auth">Auth</Link>
       <Route exact path="/">
         <Home />
       </Route>
-      <Link to="/login">Login</Link>
       {/* <Route exact path="/logout" component={Logout} /> */}
       {/* </Switch> */}
       {/* </div> */}
-    </Router>
+    </BrowserRouter>
+    // </div>
     // </HashRouter>
   );
 };
