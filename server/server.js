@@ -87,9 +87,9 @@ app.get("/*", (req, res) => {
 //   next();
 // };
 
-require("../config/passport");
-app.use(passport.initialize());
-app.use(passport.session());
+// require("../config/passport");
+// app.use(passport.initialize());
+// app.use(passport.session());
 
 // app.use((req, res, next) => {
 //   console.log("session in use", req.session);
@@ -97,7 +97,7 @@ app.use(passport.session());
 //   next();
 // });
 
-sessionStore.sync();
+// sessionStore.sync();
 
 // error handling middleware should come last because middleware is executed from top to bottom
 // if there's an error it will catch on it. If it comes first it will show error even if there's no one

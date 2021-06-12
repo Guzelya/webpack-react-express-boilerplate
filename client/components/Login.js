@@ -1,85 +1,52 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import { useHistory, Redirect, useLocation } from "react-router-dom";
 import axios from "axios";
+import { withRouter } from "react-router";
 
 const Login = () => {
+  const history = useHistory();
+  const location = useLocation();
   const [values, setValues] = useState({});
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  //   useEffect(() => {
-  //     const fetchData = async () => {
-  //       try {
-  //         const response = await axios.get(`/api/register`);
-  //         console.log("response in a list", response.data);
-  //         setValues(response.data);
-  //         // setRestaurants(response.data.data.restaurants);
-  //       } catch (err) {
-  //         console.log(err);
-  //       }
-  //     };
-  //     fetchData();
-  //   }, []);
-
-  // componentDidMount() {
-  //     axios.get(`https://localhost:3002/api/login`)
-  //       .then(res => {
-  //         console.log('res', res);
-  //       })
-  //   }
-  //   const getResult = async (e) => {
-  //     e.preventDefault;
-  //     console.log("in function");
-  //     try {
-  //       const value = await axios.get(`http://localhost:3002/api/login`);
-  //       console.log("value", value);
-  //     } catch (err) {
-  //       console.log("error in login", err);
-  //     }
-  //   };
-  //   console.log("value!!!", getResult());
-  //   const newFunction = () => {
-  //     // e.preventDefault;
-  //     console.log("we are here");
-  //   };
-  const handleNewUser = async (e) => {
-    e.preventDefault;
+  const [loginError, setLoginError] = useState(false);
+  const [userInfo, setUserInfo] = useState(null);
+  //   const doc = this;
+  //   console.log("location", location);
+  const handleLogin = async (e) => {
+    e.preventDefault();
     console.log("we are in the ");
     try {
-      const response = await axios.post(`/api/register`, {
+      console.log("inside the try in login");
+      const response = await axios.post(`/api/login`, {
         email,
         password,
       });
-      console.log("response", response);
-      return response;
+      console.log("response in login", response);
+      if (response) {
+        history.push("/auth", { params: response.data });
+      }
+      //   setUserInfo(response);
+      //   console.log("history", history);
     } catch (err) {
+      if (err.response.status === 401) {
+        console.log("401");
+        setLoginError(err.response.status);
+      }
       console.log(err);
-      return err;
     }
-
-    // await axios
-    //   // .post("/api/register", {
-    //   //   email,
-    //   //   password,
-    //   // })
-    //   .get("/api/login")
-    //   .then(() => {
-    //     console.log("response");
-    //   });
   };
-  const newFunction = () => {
-    console.log("in new function", email, password);
-  };
-
   return (
     <div>
-      <h1>please register</h1>
-      {/* <p>{values.name}</p> */}
+      <h1>please login</h1>
+      {/* {messages.error ? messages.error : null} */}
+      {loginError ? <p>invalid credentials</p> : null}
       <form>
         <label>
           Email:
           <input
             value={email}
             type="text"
-            // name="email"
             onChange={(e) => setEmail(e.target.value)}
           />
         </label>
@@ -91,11 +58,11 @@ const Login = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
         </label>
+        <button type="submit" onClick={handleLogin}>
+          login returning user
+        </button>
       </form>
-      <button type="submit" onClick={handleNewUser}>
-        register a new user
-      </button>
-      <button onClick={newFunction}>hello</button>
+      {/* <button onClick={newFunction}>hello</button> */}
     </div>
   );
 };
