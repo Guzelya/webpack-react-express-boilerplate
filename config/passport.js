@@ -7,7 +7,9 @@ const customFields = {
   usernameField: "email",
   passwordField: "password",
 };
-
+console.log("customfields", customFields);
+// done is internal passport function that takes care of supplying user's
+// credentials after user is authenticated successfully
 const passportCheck = async (username, password, done) => {
   console.log("username in passport", username, password);
   try {
@@ -40,7 +42,10 @@ const strategy = new LocalStrategy(customFields, passportCheck);
 
 passport.use(strategy);
 
+// serialize user object for saving a session
+// set id as a cookie in a user's browser
 passport.serializeUser((user, done) => {
+  // save user id , by the help of done function
   console.log("serialized", user.id);
   done(null, user.id);
 });

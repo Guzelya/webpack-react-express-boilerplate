@@ -53,7 +53,9 @@ const SignUp = () => {
         password,
       });
       console.log("response", response);
-      history.push("/auth");
+      if (response) {
+        history.push("/auth", { params: response.data.username });
+      }
     } catch (err) {
       console.log(err);
     }

@@ -32,6 +32,8 @@ const App = () => {
         <Link to="/login">Login</Link>
         <Route exact path="/auth" component={Auth} />
         <Link to="/auth">Auth</Link>
+        <Route exact path="/logout" component={Logout} />
+        <Link to="/logout">Logout</Link>
         <Route exact path="/">
           <Home />
         </Route>

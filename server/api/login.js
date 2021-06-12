@@ -27,6 +27,7 @@ router.get("/", (req, res, next) => {
 
 router.post(
   "/register",
+  notAuth,
   // passport.authenticate("local"),
   async (req, res, next) => {
     console.log("it is a new user", req.body);
@@ -89,6 +90,7 @@ router.use(passport.session());
 
 router.post(
   "/login",
+  notAuth,
   passport.authenticate(
     "local"
     // {
@@ -106,9 +108,18 @@ router.post(
   }
 );
 
-router.get("/auth", (req, res, next) => {
+router.get("/auth", isAuth, (req, res, next) => {
   console.log("you're in auth", req.body);
-  // res.send(req.body);
+  res.send(req.body);
+});
+
+// Visiting this route logs the user out
+router.get("/logout", (req, res, next) => {
+  console.log("youre in logout");
+  req.logout();
+  req.session.destroy();
+  res.send("you are successfully logged out");
+  // res.redirect("/protected-route");
 });
 
 // router.get("/yes", (req, res, next) => {
@@ -123,5 +134,25 @@ router.get("/auth", (req, res, next) => {
 //     next(err);
 //   }
 // });
+
+function isAuth(req, res, next) {
+  console.log("called in isAuth");
+  if (req.isAuthenticated()) {
+    console.log("get in");
+    return next();
+  }
+  console.log("get out");
+  // res.json({ redirectUrl: "/login" });
+  // redirect happens on front end
+  return res.redirect("/");
+}
+
+function notAuth(req, res, next) {
+  console.log("called in notAuth");
+  if (req.isAuthenticated()) {
+    return res.redirect("/auth");
+  }
+  next();
+}
 
 module.exports = router;
