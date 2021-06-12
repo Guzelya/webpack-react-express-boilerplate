@@ -13,7 +13,6 @@ const Auth = () => {
   //   };
   //   fetchData();
   // }, []);
-  // console.log("find props", this.props.history);
   return (
     <div>
       <p>You have successfully registered!</p>
