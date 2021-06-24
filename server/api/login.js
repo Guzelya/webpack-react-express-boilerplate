@@ -54,7 +54,7 @@ router.post("/login", passport.authenticate("local"), (req, res, next) => {
 });
 
 router.get("/auth", (req, res, next) => {
-  console.log("you're in auth", req.body);
+  console.log("you're in auth", req.body, req.session, req.sessionID);
   res.send(req.body);
 });
 
