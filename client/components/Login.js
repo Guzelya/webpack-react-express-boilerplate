@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useHistory, Redirect, useLocation } from "react-router-dom";
 import axios from "axios";
 import { withRouter } from "react-router";
+import { LoggedInContext } from "../context/LoggedInContext";
 
 const Login = () => {
   const history = useHistory();
@@ -11,6 +12,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [loginError, setLoginError] = useState(false);
   const [userInfo, setUserInfo] = useState(null);
+  const { authenticated, setAuthenticated } = useContext(LoggedInContext);
   //   const doc = this;
   //   console.log("location", location);
   const handleLogin = async (e) => {
@@ -24,6 +26,7 @@ const Login = () => {
       });
       console.log("response in login", response);
       if (response) {
+        setAuthenticated(true);
         history.push("/auth", { params: response.data });
       }
       //   setUserInfo(response);

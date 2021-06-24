@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useHistory, Redirect } from "react-router-dom";
 import axios from "axios";
+import { LoggedInContext } from "../context/LoggedInContext";
 
 const SignUp = () => {
   const history = useHistory();
   const [values, setValues] = useState({});
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { authenticated, setAuthenticated } = useContext(LoggedInContext);
   // console.log("history", history);
   //   useEffect(() => {
   //     const fetchData = async () => {
@@ -54,6 +56,7 @@ const SignUp = () => {
       });
       console.log("response", response);
       if (response) {
+        setAuthenticated(true);
         history.push("/auth", { params: response.data.username });
       }
     } catch (err) {
