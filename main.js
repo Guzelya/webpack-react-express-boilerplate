@@ -14,6 +14,8 @@ const app = require("./server/server.js");
 //   res.sed("what is it?");
 // });
 
+// just a note
+
 app.listen(3002, () => {
   console.log("app is listening at port 3002");
 });
