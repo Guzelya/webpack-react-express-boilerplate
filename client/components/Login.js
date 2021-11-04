@@ -1,43 +1,89 @@
-import React, { useState, useContext } from "react";
-import { useHistory, Redirect, useLocation } from "react-router-dom";
+import React, { useState, useContext, useEffect } from "react";
+import { useHistory, Redirect, useLocation, Link } from "react-router-dom";
 import axios from "axios";
 import { withRouter } from "react-router";
 import { LoggedInContext } from "../context/LoggedInContext";
+// import { Redirect } from "react-router-dom";
+import Auth from "./Auth";
 
 const Login = () => {
   const history = useHistory();
   const location = useLocation();
   const [values, setValues] = useState({});
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loginError, setLoginError] = useState(false);
   const [userInfo, setUserInfo] = useState(null);
+  const [userInfo2, setUserInfo2] = useState(null);
   const { authenticated, setAuthenticated } = useContext(LoggedInContext);
+
+  useEffect(async () => {
+    try {
+      const result = await axios.get(`api/login`);
+      console.log("result in Login", result.status);
+      if (result.status === 200) {
+        setAuthenticated(true);
+        // <Redirect to="/auth" />;
+        // setLoggedIn(true);
+        // newValue = true;
+        // console.log("do we get here?", result.status, newValue);
+        return result;
+      }
+    } catch (err) {
+      console.log("not logged in", error);
+    }
+  }, [authenticated]);
   //   const doc = this;
   //   console.log("location", location);
+  const checkIfLoggedIn = async () => {
+    try {
+      const result = await axios.get(`/api/auth`);
+      console.log("ressult in useEffect", result);
+      setUserInfo2(result);
+    } catch (err) {
+      console.log("error in useEffect", err);
+    }
+  };
   const handleLogin = async (e) => {
     e.preventDefault();
     console.log("we are in the ");
     try {
       console.log("inside the try in login");
       const response = await axios.post(`/api/login`, {
-        email,
+        username,
         password,
       });
       console.log("response in login", response);
-      if (response) {
+      if (response.status === 200) {
         setAuthenticated(true);
-        history.push("/auth", { params: response.data });
+        // history.push("/auth", { params: response.data });
+        // <Redirect to="/auth" />;
+
+        setUserInfo(true);
+        // <Redirect to={{ pathname: "/auth" }} />;
+        // return <Redirect to="/auth" />;
       }
-      //   setUserInfo(response);
-      //   console.log("history", history);
-    } catch (err) {
       if (err.response.status === 401) {
         console.log("401");
         setLoginError(err.response.status);
       }
-      console.log(err);
+      //   console.log(err);
+      // }
+      setUserInfo(response);
+      //   console.log("history", history);
+    } catch (err) {
+      //   if (err.response.status === 401) {
+      //     console.log("401");
+      //     setLoginError(err.response.status);
+      //   }
+      // console.log(err);
+      return err;
     }
+  };
+  const callRedirect = () => {
+    console.log("function was called");
+    // return <Redirect to="/auth" />;
+    return <Redirect to={{ pathname: "/auth" }} />;
   };
   return (
     <div>
@@ -48,9 +94,9 @@ const Login = () => {
         <label>
           Email:
           <input
-            value={email}
+            value={username}
             type="text"
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => setUsername(e.target.value)}
           />
         </label>
         <label>
@@ -65,7 +111,15 @@ const Login = () => {
           login returning user
         </button>
       </form>
-      {/* <button onClick={newFunction}>hello</button> */}
+      {/* {authenticated ? <Auth /> : <p>lost its athentication value</p>} */}
+      {/* <button type="submit" onClick={checkIfLoggedIn}>
+        if logged in
+      </button>
+      {userInfo2 ? <h4>still logged in</h4> : <h4>not logged in any more</h4>} */}
+      <button onClick={callRedirect}>redirect to another page</button>
+      <Link to="/auth">to new page!</Link>
+      {authenticated ? <Redirect to="/auth" /> : null}
+      {}
     </div>
   );
 };

@@ -6,7 +6,7 @@ const { BloodType } = require("./server/db/models");
 const { User } = require("./server/db/models");
 
 const seed = async () => {
-  console.log("what is wrong?");
+  // console.log("what is wrong?");
   await db.sync({ force: true });
   const person = {
     name: "Don Johnson",
@@ -26,6 +26,7 @@ const seed = async () => {
   //   console.log(Object.keys(person1.__proto__));
   await person1.setBlood_type(blood1);
   db.close();
+  console.log("seeeded successfully");
 };
 
 seed();
