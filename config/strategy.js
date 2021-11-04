@@ -10,6 +10,7 @@ console.log("customfields", customFields);
 // done is internal passport function that takes care of supplying user's
 // credentials after user is authenticated successfully
 const passportCheck = async (username, password, done) => {
+  console.log("step 0");
   console.log("username in passport", username, password);
   try {
     const user = await User.findOne({
@@ -27,6 +28,7 @@ const passportCheck = async (username, password, done) => {
     if (isValid) {
       console.log("userrrrrr", user.id);
       console.log("user exists!");
+
       return done(null, user);
     } else {
       console.log("invalid password");

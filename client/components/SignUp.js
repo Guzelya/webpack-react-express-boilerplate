@@ -6,7 +6,7 @@ import { LoggedInContext } from "../context/LoggedInContext";
 const SignUp = () => {
   const history = useHistory();
   const [values, setValues] = useState({});
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const { authenticated, setAuthenticated } = useContext(LoggedInContext);
   // console.log("history", history);
@@ -51,7 +51,7 @@ const SignUp = () => {
     try {
       console.log("inside the try");
       const response = await axios.post(`/api/register`, {
-        email,
+        username,
         password,
       });
       console.log("response", response);
@@ -65,7 +65,7 @@ const SignUp = () => {
   };
 
   const newFunction = () => {
-    console.log("in new function", email, password);
+    // console.log("in new function", email, password);
     history.push("/auth");
   };
 
@@ -76,10 +76,10 @@ const SignUp = () => {
         <label>
           Email:
           <input
-            value={email}
+            value={username}
             type="text"
             // name="email"
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => setUsername(e.target.value)}
           />
         </label>
         <label>
