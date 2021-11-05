@@ -12,28 +12,6 @@ import { LoggedInContext } from "./context/LoggedInContext";
 
 const Routes = () => {
   const { authenticated, setAuthenticated } = useContext(LoggedInContext);
-  // useEffect(async () => {
-  //   // let mounted = true;
-  //   try {
-  //     const result = await axios.get(`api/login`);
-  //     console.log("result in Login", result.status);
-  //     // if (mounted) {
-  //     if (result.status === 200) {
-  //       setAuthenticated(true);
-  //       // <Redirect to="/auth" />;
-  //       // setLoggedIn(true);
-  //       // newValue = true;
-  //       // console.log("do we get here?", result.status, newValue);
-  //       return result;
-  //     }
-  //     // }
-  //   } catch (err) {
-  //     console.log("not logged in", error);
-  //   }
-  //   // return () => {
-  //   //   mounted = false;
-  //   // };
-  // }, []);
   return (
     // <Switch>
     //   <Route exact path="/" component={Home} />
