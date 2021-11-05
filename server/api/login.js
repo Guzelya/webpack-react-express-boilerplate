@@ -3,6 +3,8 @@ const router = require("express").Router();
 const passport = require("passport");
 // const flash = require("express-flash");
 const { genPassword } = require("../../config/passwordUtils");
+const { validPassword } = require("../../config/passwordUtils");
+// const validPassword = require("../config/passwordUtils").validPassword;
 const { User } = require("../db/models");
 
 // router.use(flash());
@@ -34,9 +36,14 @@ router.post("/register", (req, res, next) => {
       console.log("inside register route", User1);
       if (!User1) {
         console.log("user does not exist");
+        const saltHash = genPassword(req.body.password);
+        const salt = saltHash.salt;
+        const hash = saltHash.hash;
         const newUser = await User.create({
           username: req.body.username,
           password: req.body.password,
+          salt,
+          hash,
           admin: true,
         });
         console.log("newUser", newUser);
@@ -87,13 +94,18 @@ router.post("/login", (req, res, next) => {
     if (err) throw err;
     if (!user) res.status(401).send("failute to log in");
     else {
+      // const isValid = validPassword(user.password, user.hash, user.salt);
       // console.log('step 1', user);
+      // if (isValid) {
       req.logIn(user, (err) => {
         if (err) throw err;
         // res.send("Successfully Authenticated");
         res.status(200).send("you're logged in");
         console.log("req.logIn", req.user);
       });
+      // } else {
+      //   res.send("password is incorrect");
+      // }
     }
   })(req, res, next);
 });
