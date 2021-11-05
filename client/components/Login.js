@@ -17,33 +17,6 @@ const Login = () => {
   const [userInfo2, setUserInfo2] = useState(null);
   const { authenticated, setAuthenticated } = useContext(LoggedInContext);
 
-  useEffect(async () => {
-    try {
-      const result = await axios.get(`api/login`);
-      console.log("result in Login", result.status);
-      if (result.status === 200) {
-        setAuthenticated(true);
-        // <Redirect to="/auth" />;
-        // setLoggedIn(true);
-        // newValue = true;
-        // console.log("do we get here?", result.status, newValue);
-        return result;
-      }
-    } catch (err) {
-      console.log("not logged in", error);
-    }
-  }, [authenticated]);
-  //   const doc = this;
-  //   console.log("location", location);
-  const checkIfLoggedIn = async () => {
-    try {
-      const result = await axios.get(`/api/auth`);
-      console.log("ressult in useEffect", result);
-      setUserInfo2(result);
-    } catch (err) {
-      console.log("error in useEffect", err);
-    }
-  };
   const handleLogin = async (e) => {
     e.preventDefault();
     console.log("we are in the ");
@@ -55,40 +28,22 @@ const Login = () => {
       });
       console.log("response in login", response);
       if (response.status === 200) {
-        setAuthenticated(true);
         // history.push("/auth", { params: response.data });
-        // <Redirect to="/auth" />;
-
         setUserInfo(true);
-        // <Redirect to={{ pathname: "/auth" }} />;
-        // return <Redirect to="/auth" />;
+        setAuthenticated(true);
       }
       if (err.response.status === 401) {
         console.log("401");
         setLoginError(err.response.status);
       }
-      //   console.log(err);
-      // }
       setUserInfo(response);
-      //   console.log("history", history);
     } catch (err) {
-      //   if (err.response.status === 401) {
-      //     console.log("401");
-      //     setLoginError(err.response.status);
-      //   }
-      // console.log(err);
       return err;
     }
-  };
-  const callRedirect = () => {
-    console.log("function was called");
-    // return <Redirect to="/auth" />;
-    return <Redirect to={{ pathname: "/auth" }} />;
   };
   return (
     <div>
       <h1>please login</h1>
-      {/* {messages.error ? messages.error : null} */}
       {loginError ? <p>invalid credentials</p> : null}
       <form>
         <label>
@@ -111,15 +66,6 @@ const Login = () => {
           login returning user
         </button>
       </form>
-      {/* {authenticated ? <Auth /> : <p>lost its athentication value</p>} */}
-      {/* <button type="submit" onClick={checkIfLoggedIn}>
-        if logged in
-      </button>
-      {userInfo2 ? <h4>still logged in</h4> : <h4>not logged in any more</h4>} */}
-      <button onClick={callRedirect}>redirect to another page</button>
-      <Link to="/auth">to new page!</Link>
-      {authenticated ? <Redirect to="/auth" /> : null}
-      {}
     </div>
   );
 };

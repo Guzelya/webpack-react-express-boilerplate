@@ -21,51 +21,39 @@ router.get("/", (req, res, next) => {
   }
 });
 
-router.post("/register", async (req, res) => {
-  console.log("user", User, req.body);
-  const User1 = await User.findOne({
-    where: {
-      username: req.body.username,
-    },
-  });
-  // const newFunction= async (err, doc) => {
-  //   console.log("do we get inside the function");
-  //   if (err) throw err;
-  //   if (doc) res.send("User Already Exists");
-  //   if (!doc) {
-  //     // const hashedPassword = await bcrypt.hash(req.body.password, 10);
-
-  //     // const newUser = new User({
-  //     //   username: req.body.username,
-  //     //   password: hashedPassword,
-  //     // });
-  //     console.log("trying to create user", User);
-  //     const newUser = new User({
-  //       username: req.body.email,
-  //       password: req.body.password,
-  //     });
-  //     await newUser.save();
-  //     res.send("User Created");
-  //   }
-  // };
-  // newFunction()
-  // console.log("user1", User1);
-  try {
-    if (!User1) {
-      console.log("user does not exist");
-      const newUser = await User.create({
-        username: req.body.email,
-        password: req.body.password,
-        admin: true,
+router.post("/register", (req, res, next) => {
+  passport.authenticate("local", async (err, user, info) => {
+    console.log("user in register", user);
+    if (err) throw err;
+    try {
+      const User1 = await User.findOne({
+        where: {
+          username: req.body.username,
+        },
       });
-      console.log("newUser", newUser);
-      res.send(newUser);
-    } else {
-      console.log("user already exists, please login");
+      console.log("inside register route", User1);
+      if (!User1) {
+        console.log("user does not exist");
+        const newUser = await User.create({
+          username: req.body.username,
+          password: req.body.password,
+          admin: true,
+        });
+        console.log("newUser", newUser);
+        req.logIn(newUser, (err) => {
+          if (err) throw err;
+          // res.send("Successfully Authenticated");
+          console.log("req.logIn", req.user);
+          res.status(200).send("you're logged in");
+        });
+        // res.send(newUser);
+      } else {
+        console.log("user already exists, please login");
+      }
+    } catch (err) {
+      console.log("error here", err);
     }
-  } catch (err) {
-    console.log("error here", err);
-  }
+  })(req, res, next);
 });
 
 // router.post(
