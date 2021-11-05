@@ -41,7 +41,7 @@ router.post("/register", (req, res, next) => {
         const hash = saltHash.hash;
         const newUser = await User.create({
           username: req.body.username,
-          password: req.body.password,
+          // password: req.body.password,
           salt,
           hash,
           admin: true,
