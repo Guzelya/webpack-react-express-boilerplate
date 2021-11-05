@@ -8,7 +8,10 @@ import Logout from "./components/Logout";
 import Home from "./components/Home";
 import PublicRoute from "./components/PublicRoute";
 import PrivateRoute from "./components/PrivateRoute";
+import Profile from "./components/Profile";
 import { LoggedInContext } from "./context/LoggedInContext";
+import ProtectedRoute from "./components/ProtectedRoute";
+import Settings from "./components/Settings";
 
 const Routes = () => {
   const { authenticated, setAuthenticated } = useContext(LoggedInContext);
@@ -24,8 +27,11 @@ const Routes = () => {
       <PublicRoute restricted={true} component={Home} exact path="/" />
       <PublicRoute restricted={true} component={Login} exact path="/login" />
       <PublicRoute restricted={true} component={SignUp} exact path="/signup" />
+      {/* <PrivateRoute component={Profile} exact path="/profile" /> */}
       <PrivateRoute component={Auth} exact path="/auth" />
       <PrivateRoute component={Logout} exact path="/logout" />
+      <ProtectedRoute component={Profile} exact path="/profile" />
+      <ProtectedRoute component={Settings} exact path="/settings" />
     </Switch>
   );
 };

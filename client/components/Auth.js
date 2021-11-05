@@ -1,9 +1,11 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Auth = () => {
   return (
     <div>
-      <p>You have successfully registered!</p>
+      <Link to="/profile">See you profile</Link>
+      <p>You have successfully registered/logged in!</p>
       <p> welcome to home page</p>
     </div>
   );
