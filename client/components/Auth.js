@@ -9,39 +9,36 @@ const Auth = () => {
   // console.log("params in location in auth", location);
   // if (location.state) {
   // const { email } = location.state.params;
-  const { loggedIn, setLoggedIn } = useState(true);
+  const { loggedIn, setLoggedIn } = useState(false);
   // let newValue = false;
-  useEffect(async () => {
-    try {
-      const result = await axios.get(`api/auth`);
-      console.log("result in Auth", result.status);
-      if (result.status === 200) {
-        setAuthenticated(true);
-        // setLoggedIn(true);
-        // newValue = true;
-        // console.log("do we get here?", result.status, newValue);
-        return result;
-      } else {
-        // setLoggedIn(false);
-        // newValue = false;
-      }
-      // if (result) {
-      //   console.log("truthy");
-      //   setLoggedIn(true);
-      //   return (await result).status;
-      // } else {
-      //   console.log("false");
-      // }
-      // setLoggedIn(result.status);
-      // console.log(loggedIn);
-      // if (result.status === 200) {
-      //   // localVariable = true;
-      // }
-    } catch (err) {
-      console.log("and here?", err);
-      newValue = false;
-    }
-  }, []);
+  // useEffect(async () => {
+  //   try {
+  //     const result = await axios.get(`api/auth`);
+  //     console.log("result in Auth", result.status);
+  //     if (result.status === 200) {
+  //       setAuthenticated(true);
+  //       // setLoggedIn(true);
+  //       // newValue = true;
+  //       // console.log("do we get here?", result.status, newValue);
+  //       // return result;
+  //     }
+  //     // if (result) {
+  //     //   console.log("truthy");
+  //     //   setLoggedIn(true);
+  //     //   return (await result).status;
+  //     // } else {
+  //     //   console.log("false");
+  //     // }
+  //     // setLoggedIn(result.status);
+  //     // console.log(loggedIn);
+  //     // if (result.status === 200) {
+  //     //   // localVariable = true;
+  //     // }
+  //   } catch (err) {
+  //     console.log("and here?", err);
+  //     newValue = false;
+  //   }
+  // }, []);
   // let localVariable = false;
   // useEffect(() => {
   //   const fetchData = async () => {

@@ -12,8 +12,8 @@ const Logout = () => {
     console.log("result", result);
     if (result) {
       // return <h1>logged out just now!</h1>;
-      setAuthenticated(false);
       setLoggedOut(true);
+      setAuthenticated(false);
     }
   };
 
