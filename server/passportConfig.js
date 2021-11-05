@@ -1,5 +1,6 @@
 const { User } = require("./db/models");
 const bcrypt = require("bcryptjs");
+const validPassword = require("../config/passwordUtils").validPassword;
 const LocalStrategy = require("passport-local").Strategy;
 
 module.exports = function (passport) {
@@ -16,6 +17,17 @@ module.exports = function (passport) {
           username,
         },
       });
+      if (User1) {
+        console.log("user exists from passport config");
+        const isValid = validPassword(password, User1.hash, User1.salt);
+        if (isValid) {
+          return done(null, User1);
+        }
+        return done(null, false);
+      } else {
+        console.log("user does not exist from passportConfig");
+        return done(null, false);
+      }
       //   User.findOne({ username: username }, (err, user) => {
       //     if (err) throw err;
       //     if (!user) return done(null, false);
@@ -27,11 +39,18 @@ module.exports = function (passport) {
       //     return done(null, false);
       //   }
       // });
-      if (password === null) {
-        return done(null, false);
-      } else {
-        return done(null, User1);
-      }
+      // if (password === null) {
+      //   ("we should be here");
+      //   return done(null, false);
+      // } else {
+      //   // const isValid = validPassword(password, User1.hash, User1.salt);
+      //   // if (isValid) {
+      //   //   return done(null, User1);
+      //   // } else {
+      //   //   return done(null, false);
+      //   return done(null, User1);
+      //   // }
+      // }
       //   });
     })
   );

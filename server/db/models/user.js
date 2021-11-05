@@ -9,20 +9,20 @@ const User = db.define("user", {
       notEmpty: true,
     },
   },
-  // hash: {
-  //   type: Sequelize.STRING,
-  //   allowNull: false,
-  //   validate: {
-  //     notEmpty: true,
-  //   },
-  // },
-  // salt: {
-  //   type: Sequelize.STRING,
-  //   allowNull: false,
-  //   validate: {
-  //     notEmpty: true,
-  //   },
-  // },
+  hash: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    validate: {
+      notEmpty: true,
+    },
+  },
+  salt: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    validate: {
+      notEmpty: true,
+    },
+  },
   admin: {
     type: Sequelize.BOOLEAN,
     allowNull: false,
@@ -32,9 +32,9 @@ const User = db.define("user", {
   },
   password: {
     type: Sequelize.STRING,
-    allowNull: false,
+    allowNull: true,
     validate: {
-      notEmpty: true,
+      notEmpty: false,
     },
   },
 });
