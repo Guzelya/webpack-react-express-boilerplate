@@ -47,27 +47,50 @@ const SignUp = () => {
   //   };
   const handleNewUser = async (e) => {
     e.preventDefault();
-    console.log("we are in the ");
-    try {
-      console.log("inside the try");
-      const response = await axios.post(`/api/register`, {
-        username,
-        password,
-      });
-      console.log("response", response);
-      if (response) {
-        setAuthenticated(true);
-        history.push("/auth", { params: response.data.username });
-      }
-    } catch (err) {
-      console.log(err);
+    console.log("see password", password);
+    if (
+      /^(?=(.*[a-z]){1,})(?=(.*[!@#$%^&*()\-+_=,.><?/]){1,})(?=(.*[A-Z]){1,})(?=(.*[0-9]){1,})\S+$/.test(
+        password
+      ) &&
+      password.length >= 7
+    ) {
+      console.log("combination worked");
+    } else {
+      console.log("did not work");
     }
+    if (
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+        username
+      )
+    ) {
+      console.log("email is correct");
+    } else {
+      console.log("email address is invalid");
+    }
+
+    // try {
+    //   console.log("inside the try");
+    //   const response = await axios.post(`/api/register`, {
+    //     username,
+    //     password,
+    //   });
+    //   console.log("response", response);
+    //   // if (response) {
+    //   //   setAuthenticated(true);
+    //   //   history.push("/auth", { params: response.data.username });
+    //   // }
+    // } catch (err) {
+    //   console.log(err);
+    // }
   };
 
-  const newFunction = () => {
-    // console.log("in new function", email, password);
-    history.push("/auth");
-  };
+  // const newFunction = () => {
+  //   // console.log("in new function", email, password);
+  //   history.push("/auth");
+  // };
+  // const checkPassword = (value) => {
+  //   console.log("each new letter", value);
+  // };
 
   return (
     <div>
@@ -94,7 +117,7 @@ const SignUp = () => {
           register a new user
         </button>
       </form>
-      <button onClick={newFunction}>hello</button>
+      {/* <button onClick={newFunction}>hello</button> */}
     </div>
   );
 };
