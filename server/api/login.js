@@ -1,6 +1,9 @@
 const app = require("../server");
 const router = require("express").Router();
 const passport = require("passport");
+require("dotenv").config();
+const nodemailer = require("nodemailer");
+const sendgridTransport = require("nodemailer-sendgrid-transport");
 // const flash = require("express-flash");
 const { genPassword } = require("../../config/passwordUtils");
 const { validPassword } = require("../../config/passwordUtils");
@@ -8,6 +11,27 @@ const { validPassword } = require("../../config/passwordUtils");
 const { User } = require("../db/models");
 
 // router.use(flash());
+// const key = process.env.SEND_EMAIL_KEY;
+// console.log("we're in login", typeof key, key);
+const transporter = nodemailer.createTransport(
+  sendgridTransport({
+    auth: { api_key: process.env.SEND_EMAIL_KEY },
+  })
+
+  // {
+  // host: "smtp.gmail.com",
+  // service: "gmail.com",
+  // port: 587,
+  // secure: false,
+  // auth: {
+  //   // type: "login",
+  //   user: "guzelkisselev@protonmail.com",
+  //   pass: "liveInPeace2@SolarSystem",
+  // },
+  // }
+  // })
+);
+console.log("transporter", transporter);
 
 router.get("/", (req, res, next) => {
   try {
@@ -47,12 +71,27 @@ router.post("/register", (req, res, next) => {
           admin: true,
         });
         console.log("newUser", newUser);
+        const result = await transporter.sendMail({
+          to: newUser.username,
+          from: "guzelkisselev@protonmail.com",
+          subject: "you have been successfully signed up",
+          html: "<h1>welcome to blood donor donation group</h1>",
+          // text: "Hello Team! are we in spam folder again?",
+        });
+        console.log("result from sendMail", result);
         req.logIn(newUser, (err) => {
           if (err) throw err;
           // res.send("Successfully Authenticated");
           console.log("req.logIn", req.user);
           res.status(200).send("you're logged in");
         });
+        // const result = await transporter.sendMail({
+        //   to: newUser.username,
+        //   from: "no-reply@gmail.com",
+        //   subject: "you have been successfully signed up",
+        //   html: "<h1>welcome to blood donor donation group</h1>",
+        // });
+        // console.log("result from sendMail", result);
         // res.send(newUser);
       } else {
         console.log("user already exists, please login");
