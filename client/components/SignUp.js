@@ -9,6 +9,7 @@ const SignUp = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const { authenticated, setAuthenticated } = useContext(LoggedInContext);
+  const [correctValues, setCorrectValues] = useState(false);
   // console.log("history", history);
   //   useEffect(() => {
   //     const fetchData = async () => {
@@ -55,8 +56,10 @@ const SignUp = () => {
       password.length >= 7
     ) {
       console.log("combination worked");
+      setCorrectValues(true);
     } else {
       console.log("did not work");
+      setCorrectValues(false);
     }
     if (
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
@@ -64,24 +67,30 @@ const SignUp = () => {
       )
     ) {
       console.log("email is correct");
+      setCorrectValues(true);
     } else {
       console.log("email address is invalid");
+      setCorrectValues(false);
     }
-
-    // try {
-    //   console.log("inside the try");
-    //   const response = await axios.post(`/api/register`, {
-    //     username,
-    //     password,
-    //   });
-    //   console.log("response", response);
-    //   // if (response) {
-    //   //   setAuthenticated(true);
-    //   //   history.push("/auth", { params: response.data.username });
-    //   // }
-    // } catch (err) {
-    //   console.log(err);
-    // }
+    if (correctValues) {
+      console.log("correct values indeed", correctValues);
+      try {
+        console.log("inside the try");
+        const response = await axios.post(`/api/register`, {
+          username,
+          password,
+        });
+        console.log("response", response);
+        // if (response) {
+        //   setAuthenticated(true);
+        //   history.push("/auth", { params: response.data.username });
+        // }
+      } catch (err) {
+        console.log(err);
+      }
+    } else {
+      console.log("incorrect", correctValues);
+    }
   };
 
   // const newFunction = () => {
