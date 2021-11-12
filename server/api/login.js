@@ -110,6 +110,18 @@ router.post("/login", (req, res, next) => {
   })(req, res, next);
 });
 
+router.post(
+  "/auth/google",
+  passport.authenticate("google", { scope: ["email", "profile"] })
+);
+router.get(
+  "/auth/google/callback",
+  passport.authenticate("google", {
+    successRedirect: "/auth",
+    failureRedirect: "/auth/google/failure",
+  })
+);
+
 router.get("/login", isAuth, (req, res, next) => {
   if (req.user) {
     res.status(200).send(req.user); // The req.user stores the entire user that has been authenticated inside of it.

@@ -3,6 +3,7 @@ import { useHistory, Redirect, useLocation, Link } from "react-router-dom";
 import axios from "axios";
 import { withRouter } from "react-router";
 import { LoggedInContext } from "../context/LoggedInContext";
+import { GoogleLogin } from "react-google-login";
 // import { Redirect } from "react-router-dom";
 import Auth from "./Auth";
 
@@ -22,7 +23,7 @@ const Login = () => {
     console.log("we are in the ");
     try {
       console.log("inside the try in login");
-      const response = await axios.post(`/api/login`, {
+      const response = await axios.post(`/api/auth/google`, {
         username,
         password,
       });
@@ -40,6 +41,29 @@ const Login = () => {
     } catch (err) {
       return err;
     }
+  };
+  const onGoogleSuccess = (response) => {
+    console.log("response in google", response);
+    console.log("access token", response.accessToken);
+    // try {
+    //   const result = await axios.get(`api/login`);
+    //   console.log("result in protected routes", result.status);
+    //   // if (mounted) {
+    //   if (result.status === 200) {
+    //     setAuthenticated(true);
+    //     // <Redirect to="/auth" />;
+    //     // setLoggedIn(true);
+    //     // newValue = true;
+    //     // console.log("do we get here?", result.status, newValue);
+    //     return result;
+    //   }
+    //   // }
+    // } catch (err) {
+    //   console.log("not logged in", error);
+    // }
+  };
+  const onGoogleFailure = (response) => {
+    console.log(" failure to login", response);
   };
   return (
     <div>
@@ -66,6 +90,20 @@ const Login = () => {
           login returning user
         </button>
       </form>
+      <h1>Google Oauth Sign In</h1>
+      <GoogleLogin
+        clientId={
+          // "641928958844-eikgjdi2bm7pgkuor5rjv20ovb6r5rfm.apps.googleusercontent.com"
+          process.env.GOOGLE_CLIENT_ID
+        }
+        buttonText="Sign in with Google"
+        onSuccess={onGoogleSuccess}
+        onFailure={onGoogleFailure}
+        cookiePolicy={"single_host_origin"}
+        className="google-login-button"
+        // SameSite="None"
+        // SameSite="Strict"
+      />
     </div>
   );
 };
