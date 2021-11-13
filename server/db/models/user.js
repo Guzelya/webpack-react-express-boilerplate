@@ -9,25 +9,32 @@ const User = db.define("user", {
       notEmpty: true,
     },
   },
+  googleId: {
+    type: Sequelize.STRING,
+    allowNull: true,
+    validate: {
+      notEmpty: false,
+    },
+  },
   hash: {
     type: Sequelize.STRING,
-    allowNull: false,
+    allowNull: true,
     validate: {
-      notEmpty: true,
+      notEmpty: false,
     },
   },
   salt: {
     type: Sequelize.STRING,
-    allowNull: false,
+    allowNull: true,
     validate: {
-      notEmpty: true,
+      notEmpty: false,
     },
   },
   admin: {
     type: Sequelize.BOOLEAN,
-    allowNull: false,
+    allowNull: true,
     validate: {
-      notEmpty: true,
+      notEmpty: false,
     },
   },
   password: {
