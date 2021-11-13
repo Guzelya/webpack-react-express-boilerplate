@@ -16,9 +16,18 @@ const passport = require("passport");
 
 // initializePassport(passport);
 require("./passportConfig")(passport);
+// require("./passportGoogleConfig")(passport);
 
 const app = express();
 
+// app.use(cors());
+app.use(cors({ origin: "http://localhost:3002" }));
+// app.options(
+//   "*",
+//   cors({ origin: "http://localhost:3002", optionsSuccessStatus: 200 })
+// );
+
+// app.use(cors({ origin: "http://localhost:3002", optionsSuccessStatus: 200 }));
 // static middleware
 // app.use(express.static(path.join(__dirname, "../public")));
 app.use(express.static(path.join(__dirname, "../dist")));
@@ -26,8 +35,6 @@ app.use(express.static(path.join(__dirname, "../dist")));
 // body parsing middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-// app.use(cors);
 
 app.use(cookieParser());
 app.use(
@@ -42,6 +49,14 @@ app.use(
     // },
   })
 );
+// app.use(function (req, res, next) {
+//   res.header("Access-Control-Allow-Origin", "http://localhost:3002"); // update to match the domain you will make the request from
+//   res.header(
+//     "Access-Control-Allow-Headers",
+//     "Origin, X-Requested-With, Content-Type, Accept"
+//   );
+//   next();
+// });
 
 // this middleware registers passport with express.
 // it will not work without passport file imported from config file require("../config/passport");
@@ -50,6 +65,16 @@ app.use(passport.initialize());
 app.use(passport.session());
 // passport.use(strategy);
 // require("./passportConfig")(passport);
+
+// app.use((req, res, next) => {
+//   res.setHeader("Access-Control-Allow-Origin", "*");
+//   res.setHeader(
+//     "Access-Control-Allow-Methods",
+//     "OPTIONS, GET, POST, PUT, PATCH, DELETE"
+//   );
+//   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+//   next();
+// });
 
 // include our routes!
 app.use("/api", require("./api"));

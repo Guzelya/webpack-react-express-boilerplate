@@ -21,6 +21,9 @@
     "connect-session-sequelize": "^7.1.1",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
+    "dompurify": "^2.3.3",
+    "dotenv": "^10.0.0",
+    "dotenv-webpack": "^7.0.3",
     "express": "^4.17.1",
     "express-flash": "0.0.2",
     "express-session": "^1.17.2",
@@ -34,7 +37,8 @@
     "react-google-login": "^5.2.2",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
-    "sequelize": "^6.6.2"
+    "sequelize": "^6.6.2",
+    "webpack-browser-plugin": "^1.0.20"
   },
   "devDependencies": {
     "@babel/core": "^7.14.3",
