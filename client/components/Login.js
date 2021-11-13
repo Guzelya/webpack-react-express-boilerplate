@@ -5,6 +5,7 @@ import DOMPurify from "dompurify";
 import { withRouter } from "react-router";
 import { LoggedInContext } from "../context/LoggedInContext";
 import { GoogleLogin } from "react-google-login";
+import { tt } from "trusted-types";
 // import { Redirect } from "react-router-dom";
 // require("dotenv").config();
 // import { config } from "dotenv";
@@ -97,7 +98,29 @@ const Login = () => {
   };
   const callGoogleOauth1 = () => {
     window.open("http://localhost:3002/api/auth/google", "_self");
-    let clean = DOMPurify.sanitize(window);
+    // if (window.trustedTypes && trustedTypes.createPolicy) {
+    //   // Feature testing
+    //   const myPolicy = trustedTypes.createPolicy("myPolicy", {
+    //     createHTML: (string) => string.replace(/\</g, "&lt;"),
+    //   });
+    //   myPolicy.createHTML(
+    //     window.open("http://localhost:3002/api/auth/google", "_self")
+    //   );w
+    //   DOMPurify.sanitize(
+    //     window.open("http://localhost:3002/api/auth/google", "_self")
+    //   );
+    // }
+    // return window.open("http://localhost:3002/api/auth/google", "_self");
+    // // let clean = DOMPurify.sanitize(window);
+    // return (
+    //   <p
+    //     dangerouslySetInnerHTML={{
+    //       __html: DOMPurify.sanitize(
+    //         window.open("http://localhost:3002/api/auth/google", "_self")
+    //       ),
+    //     }}
+    //   ></p>
+    // );
   };
   return (
     <div>

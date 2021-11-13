@@ -38,6 +38,7 @@
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "sequelize": "^6.6.2",
+    "trusted-types": "^2.0.0",
     "webpack-browser-plugin": "^1.0.20"
   },
   "devDependencies": {
