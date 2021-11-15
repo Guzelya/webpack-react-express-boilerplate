@@ -37,6 +37,20 @@ const User = db.define("user", {
       notEmpty: false,
     },
   },
+  resetToken: {
+    type: Sequelize.STRING,
+    allowNull: true,
+    validate: {
+      notEmpty: false,
+    },
+  },
+  expireToken: {
+    type: Sequelize.STRING,
+    allowNull: true,
+    validate: {
+      notEmpty: false,
+    },
+  },
 });
 
 module.exports = User;

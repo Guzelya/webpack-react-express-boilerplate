@@ -4,6 +4,7 @@ const passport = require("passport");
 require("dotenv").config();
 const nodemailer = require("nodemailer");
 const sendgridTransport = require("nodemailer-sendgrid-transport");
+const crypto = require("crypto");
 // const flash = require("express-flash");
 const { genPassword } = require("../../config/passwordUtils");
 const { validPassword } = require("../../config/passwordUtils");
@@ -18,7 +19,7 @@ const transporter = nodemailer.createTransport(
     auth: { api_key: process.env.SEND_EMAIL_KEY },
   })
 );
-console.log("transporter", transporter);
+// console.log("transporter", transporter);
 
 router.get("/", (req, res, next) => {
   try {
@@ -142,6 +143,55 @@ router.get("/login", isAuth, (req, res, next) => {
   } else {
     res.status(403).send("access forbidden");
   }
+});
+
+router.post("/reset-password", async (req, res, next) => {
+  const password_token = crypto.randomBytes(32).toString("hex");
+  const User1 = await User.findOne({
+    where: {
+      username: req.body.email,
+    },
+  });
+  if (User1) {
+    User1.resetToken = password_token;
+    User1.expireToken = Date.now() + 3600000;
+    resetURL = `http://localhost:3002/reset/${password_token}`;
+    justURL = "https://community.nodemailer.com";
+    await User1.save();
+    transporter.sendMail({
+      to: User1.username,
+      from: "guzelkisselev@protonmail.com",
+      subject: "reset your password",
+      html: `<p>To reset your password please follow this link</p> <a href=${resetURL}>hello there</a>
+      <h2> anything?</h2>`,
+    });
+    return res.status(200).json("check your email");
+  }
+  return res.status(422).json({ error: "User dont exists with that email" });
+});
+
+router.post("/new-password", async (req, res, next) => {
+  console.log("inside the new-password router");
+  const User1 = await User.findOne({
+    where: {
+      resetToken: req.body.password_token,
+      // expireToken: { $gt: Date.now() },
+    },
+  });
+  if (User1) {
+    if (User1.expireToken - Date.now() > 0) {
+      console.log("user1 time left", User1.expireToken - Date.now());
+      const saltHash = genPassword(req.body.password);
+      const salt = saltHash.salt;
+      const hash = saltHash.hash;
+      User1.salt = salt;
+      User1.hash = hash;
+      await User1.save();
+      // console.log("newUser", User);
+      return res.status(200).json("your password is reset!!!!");
+    }
+  }
+  return res.status(422).json("your link expired, please try again");
 });
 
 // router.post("/login", passport.authenticate("local"), (req, res, next) => {
