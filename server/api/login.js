@@ -10,6 +10,7 @@ const { genPassword } = require("../../config/passwordUtils");
 const { validPassword } = require("../../config/passwordUtils");
 // const validPassword = require("../config/passwordUtils").validPassword;
 const { User } = require("../db/models");
+// require("dotenv").config();
 
 // router.use(flash());
 // const key = process.env.SEND_EMAIL_KEY;
@@ -20,6 +21,7 @@ const transporter = nodemailer.createTransport(
   })
 );
 // console.log("transporter", transporter);
+// console.log("dotenv", process.env.GOOGLE_CLIENT_ID);
 
 router.get("/", (req, res, next) => {
   try {
@@ -137,6 +139,35 @@ router.post("/login", (req, res, next) => {
   })(req, res, next);
 });
 
+router.get(
+  "/auth/google",
+  passport.authenticate("google", { scope: ["email", "profile"] })
+  // (req, res, next) => {
+  //   console.log("inside auth/google route", req.body);
+  //   res.status(200).send("authentication is successful");
+  // }
+);
+router.get(
+  "/auth/google/callback",
+  passport.authenticate("google", { failureRedirect: "/login" }),
+  function (req, res) {
+    // Successful authentication, redirect home.
+    console.log("redirect callback", req.body);
+    res.redirect("/auth");
+  }
+);
+router.get(
+  "/auth/google/callback",
+  passport.authenticate("google", {
+    successRedirect: "/protected",
+    failureRedirect: "/auth/google/failure",
+  })
+);
+
+router.get("/protected", (req, res) => {
+  res.send(`Hello new user!`);
+});
+
 router.get("/login", isAuth, (req, res, next) => {
   if (req.user) {
     res.status(200).send(req.user); // The req.user stores the entire user that has been authenticated inside of it.
@@ -237,7 +268,7 @@ router.post("/new-password", async (req, res, next) => {
 // });
 
 router.get("/auth", isAuth, (req, res, next) => {
-  console.log("inside auth route", req.user, req.isAuthenticated);
+  console.log("inside auth route", req, req.isAuthenticated);
   if (req.user) {
     res.status(200).send(req.user); // The req.user stores the entire user that has been authenticated inside of it.
   } else {

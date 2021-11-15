@@ -1,10 +1,16 @@
 import React, { useState, useContext, useEffect } from "react";
 import { useHistory, Redirect, useLocation, Link } from "react-router-dom";
 import axios from "axios";
+import DOMPurify from "dompurify";
 import { withRouter } from "react-router";
 import { LoggedInContext } from "../context/LoggedInContext";
+import { GoogleLogin } from "react-google-login";
+import { tt } from "trusted-types";
 // import { Redirect } from "react-router-dom";
+// require("dotenv").config();
+// import { config } from "dotenv";
 import Auth from "./Auth";
+// config();
 
 const Login = () => {
   const history = useHistory();
@@ -66,6 +72,81 @@ const Login = () => {
       return err;
     }
   };
+  const onGoogleSuccess = async (response) => {
+    console.log("response in google", response);
+    console.log("access token", response.accessToken);
+    const { accessToken } = response;
+    try {
+      await axios.post(`api/auth/google`, { accessToken });
+      console.log("result in protected routes");
+      // if (mounted) {
+      // if (result.status === 200) {
+      //   setAuthenticated(true);
+      //   // <Redirect to="/auth" />;
+      //   // setLoggedIn(true);
+      //   // newValue = true;
+      //   // console.log("do we get here?", result.status, newValue);
+      //   return result;
+      // }
+      // }
+    } catch (err) {
+      console.log("not logged in", error);
+    }
+  };
+  const onGoogleFailure = (response) => {
+    console.log(" failure to login", response);
+  };
+  const callGoogleOauth = async () => {
+    // const headers = {
+    //   "Content-Type": "text/plain",
+    // };
+    // const headers = {
+    //   "Content-Type": "application/json;charset=UTF-8",
+    //   "Access-Control-Allow-Origin": "*",
+    // };
+    try {
+      // window.open("http://localhost:3002/api/auth/google", "_self");
+      await axios.get(
+        `api/auth/google`
+        // { headers }
+        // headers: {
+        //   "Access-Control-Allow-Origin": "*",
+        //   "Access-Control-Allow-Headers": "*",
+        //   "Access-Control-Allow-Methods": "*",
+        // },
+      );
+      // console.log("result for google oauth2", result);
+    } catch (err) {
+      console.log("failued to connect to OAuth2", err);
+      return err;
+    }
+  };
+  const callGoogleOauth1 = () => {
+    window.open("http://localhost:3002/api/auth/google", "_self");
+    // if (window.trustedTypes && trustedTypes.createPolicy) {
+    //   // Feature testing
+    //   const myPolicy = trustedTypes.createPolicy("myPolicy", {
+    //     createHTML: (string) => string.replace(/\</g, "&lt;"),
+    //   });
+    //   myPolicy.createHTML(
+    //     window.open("http://localhost:3002/api/auth/google", "_self")
+    //   );w
+    //   DOMPurify.sanitize(
+    //     window.open("http://localhost:3002/api/auth/google", "_self")
+    //   );
+    // }
+    // return window.open("http://localhost:3002/api/auth/google", "_self");
+    // // let clean = DOMPurify.sanitize(window);
+    // return (
+    //   <p
+    //     dangerouslySetInnerHTML={{
+    //       __html: DOMPurify.sanitize(
+    //         window.open("http://localhost:3002/api/auth/google", "_self")
+    //       ),
+    //     }}
+    //   ></p>
+    // );
+  };
   return (
     <div>
       <h1>please login</h1>
@@ -99,6 +180,20 @@ const Login = () => {
         onChange={(e) => setEmail(e.target.value)}
       />
       <button onClick={sendEmail}>reset password</button>
+      <h1>Google Oauth Sign In</h1>
+      {/* <GoogleLogin
+        clientId={process.env.GOOGLE_CLIENT_ID}
+        buttonText="Sign in with Google"
+        onSuccess={onGoogleSuccess}
+        onFailure={onGoogleFailure}
+        cookiePolicy={"single_host_origin"}
+        className="google-login-button"
+        // SameSite="None"
+        // SameSite="Strict"
+      /> */}
+      <button onClick={callGoogleOauth1}>google login</button>
+
+      {/* <a href="http://localhost:3002/api/auth/google">Log in to google</a> */}
     </div>
   );
 };

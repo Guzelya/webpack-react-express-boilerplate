@@ -1,5 +1,9 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const Dotenv = require("dotenv-webpack");
+// const browserPlugin = require("webpack-browser-plugin");
+// const chromeUserDataDir = "your/path/here";
+// require("dotenv").config();
 
 module.exports = {
   entry: "./client/index.js",
@@ -36,10 +40,58 @@ module.exports = {
     watchOptions: {
       poll: true,
     },
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Headers": "*",
+      "Access-Control-Allow-Methods": "*",
+    },
+    // headers: {
+    //   "Access-Control-Allow-Origin": "http://localhost:3002",
+    // },
+    // proxy: {
+    //   "/api": {
+    //     target: "http://localhost:3002",
+    //     pathRewrite: { "^/api": "" },
+    //   },
+    // },
+    // proxy: {
+    //   "/api": {
+    //     changeOrigin: true,
+    //     cookieDomainRewrite: "localhost",
+    //     target: api,
+    //     onProxyReq: (proxyReq) => {
+    //       if (proxyReq.getHeader("origin")) {
+    //         proxyReq.setHeader("origin", api);
+    //       }
+    //     },
+    //   },
+    // },
+    // headers: {
+    //   "Access-Control-Allow-Origin": "*",
+    //   "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+    //   "Access-Control-Allow-Headers":
+    //     "X-Requested-With, content-type, Authorization",
+    // },
   },
+  // headers: {
+  //   "Access-Control-Allow-Origin": "http://localhost:3002",
+  // },
   plugins: [
     new HtmlWebpackPlugin({
       template: "public/index.html",
     }),
+    new Dotenv({
+      path: "./.env",
+    }),
+    // new browserPlugin({
+    //   openOptions: {
+    //     app: [
+    //       "chrome",
+    //       //'--incognito',
+    //       "--disable-web-security", // to enable CORS
+    //       // "--user-data-dir=" + path.resolve(chromeUserDataDir), // to let Chrome create and store here developers plugins, settings, etc.
+    //     ],
+    //   },
+    // }),
   ],
 };
