@@ -10,6 +10,8 @@ const SignUp = () => {
   const [password, setPassword] = useState("");
   const { authenticated, setAuthenticated } = useContext(LoggedInContext);
   const [correctValues, setCorrectValues] = useState(false);
+  const [passwordError, setPasswordError] = useState(true);
+  const [usernameError, setUsernameError] = useState(true);
   // console.log("history", history);
   //   useEffect(() => {
   //     const fetchData = async () => {
@@ -53,27 +55,30 @@ const SignUp = () => {
       /^(?=(.*[a-z]){1,})(?=(.*[!@#$%^&*()\-+_=,.><?/]){1,})(?=(.*[A-Z]){1,})(?=(.*[0-9]){1,})\S+$/.test(
         password
       ) &&
-      password.length >= 7
-    ) {
-      console.log("combination worked");
-      setCorrectValues(true);
-    } else {
-      console.log("did not work");
-      setCorrectValues(false);
-    }
-    if (
+      password.length >= 7 &&
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
         username
       )
     ) {
-      console.log("email is correct");
-      setCorrectValues(true);
-    } else {
-      console.log("email address is invalid");
-      setCorrectValues(false);
-    }
-    if (correctValues) {
-      console.log("correct values indeed", correctValues);
+      console.log("both values are correct");
+      //   setCorrectValues(true);
+      // } else {
+      //   console.log("did not work");
+      //   setCorrectValues(false);
+      // }
+      // if (
+      //   /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+      //     username
+      //   )
+      // ) {
+      //   console.log("email is correct");
+      //   setCorrectValues(true);
+      // } else {
+      //   console.log("email address is invalid");
+      //   setCorrectValues(false);
+      // }
+      // if (correctValues) {
+      //   console.log("correct values indeed", correctValues);
       try {
         console.log("inside the try");
         const response = await axios.post(`/api/register`, {
@@ -89,7 +94,21 @@ const SignUp = () => {
         console.log(err);
       }
     } else {
-      console.log("incorrect", correctValues);
+      console.log("one of the values is incorrect");
+      if (
+        /^(?=(.*[a-z]){1,})(?=(.*[!@#$%^&*()\-+_=,.><?/]){1,})(?=(.*[A-Z]){1,})(?=(.*[0-9]){1,})\S+$/.test(
+          password
+        ) === false
+      ) {
+        setPasswordError(false);
+      }
+      if (
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+          username
+        ) === false
+      ) {
+        setUsernameError(false);
+      }
     }
   };
 
@@ -111,7 +130,10 @@ const SignUp = () => {
             value={username}
             type="text"
             // name="email"
-            onChange={(e) => setUsername(e.target.value)}
+            onChange={(e) => {
+              setUsername(e.target.value), setUsernameError(true);
+            }}
+            style={!usernameError ? { borderColor: "red" } : null}
           />
         </label>
         <label>
@@ -119,7 +141,11 @@ const SignUp = () => {
           <input
             type="password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => {
+              setPassword(e.target.value);
+              setPasswordError(true);
+            }}
+            style={!passwordError ? { borderColor: "red" } : null}
           />
         </label>
         <button type="submit" onClick={handleNewUser}>

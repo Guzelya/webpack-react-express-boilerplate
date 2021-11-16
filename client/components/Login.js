@@ -55,7 +55,6 @@ const Login = () => {
       console.log("inside the try in send email");
       const response = await axios.post(`/api/reset-password`, {
         email,
-        password,
       });
       console.log("response in sendEmail", response);
       // if (response.status === 200) {
