@@ -162,6 +162,7 @@ router.get(
   //   res.status(200).send("authentication is successful");
   // }
 );
+
 router.get(
   "/auth/google/callback",
   passport.authenticate("google", { failureRedirect: "/login" }),
@@ -171,13 +172,24 @@ router.get(
     res.redirect("/auth");
   }
 );
+router.get("/auth/facebook", passport.authenticate("facebook"));
 router.get(
-  "/auth/google/callback",
-  passport.authenticate("google", {
-    successRedirect: "/protected",
-    failureRedirect: "/auth/google/failure",
-  })
+  "/auth/facebook/callback",
+  passport.authenticate("facebook", { failureRedirect: "/login" }),
+  function (req, res) {
+    // Successful authentication, redirect home.
+    console.log("redirect callback", req.body);
+    res.redirect("/auth");
+  }
 );
+
+// router.get(
+//   "/auth/google/callback",
+//   passport.authenticate("google", {
+//     successRedirect: "/protected",
+//     failureRedirect: "/auth/google/failure",
+//   })
+// );
 
 router.get("/protected", (req, res) => {
   res.send(`Hello new user!`);

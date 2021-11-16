@@ -16,6 +16,13 @@ const User = db.define("user", {
       notEmpty: false,
     },
   },
+  facebookId: {
+    type: Sequelize.STRING,
+    allowNull: true,
+    validate: {
+      notEmpty: false,
+    },
+  },
   hash: {
     type: Sequelize.STRING,
     allowNull: true,
