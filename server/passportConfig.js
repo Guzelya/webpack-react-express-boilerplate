@@ -3,6 +3,7 @@ const bcrypt = require("bcryptjs");
 const validPassword = require("../config/passwordUtils").validPassword;
 const LocalStrategy = require("passport-local").Strategy;
 const GoogleStrategy = require("passport-google-oauth2").Strategy;
+const FacebookStrategy = require("passport-facebook").Strategy;
 require("dotenv").config();
 
 module.exports = function (passport) {
@@ -86,6 +87,51 @@ module.exports = function (passport) {
             const newUser = await User.create({
               username: profile.email,
               googleId: profile.id,
+            });
+            return done(null, newUser);
+          }
+          return done(null, User1);
+        } catch (err) {
+          console.log("error from the callback", err);
+          return err;
+        }
+      }
+    )
+  );
+
+  passport.use(
+    new FacebookStrategy(
+      {
+        clientID: process.env.FACEBOOK_APP_ID,
+        clientSecret: process.env.FACEBOOK_APP_SECRET,
+        callbackURL: "http://localhost:3002/api/auth/facebook/callback",
+      },
+      // function(accessToken, refreshToken, profile, done) {
+      //   User.findOrCreate(..., function(err, user) {
+      //     if (err) { return done(err); }
+      //     done(null, user);
+      //   });
+      // }
+      async (accessToken, refreshToken, profile, done) => {
+        console.log(
+          "inside facebook middleware",
+          profile,
+          "accesstoken",
+          accessToken
+        );
+        try {
+          // should create new entry facebookId
+          const User1 = await User.findOne({
+            where: {
+              username: profile.id,
+            },
+          });
+          // if user did not register with the app
+          if (!User1) {
+            console.log("user does not exist!");
+            const newUser = await User.create({
+              username: profile.displayName,
+              facebookId: profile.id,
             });
             return done(null, newUser);
           }

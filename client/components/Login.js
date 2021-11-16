@@ -146,6 +146,9 @@ const Login = () => {
     //   ></p>
     // );
   };
+  const callFacebookLogin = () => {
+    window.open("http://localhost:3002/api/auth/facebook", "_self");
+  };
   return (
     <div>
       <h1>please login</h1>
@@ -191,6 +194,7 @@ const Login = () => {
         // SameSite="Strict"
       /> */}
       <button onClick={callGoogleOauth1}>google login</button>
+      <button onClick={callFacebookLogin}>facebook login</button>
 
       {/* <a href="http://localhost:3002/api/auth/google">Log in to google</a> */}
     </div>
