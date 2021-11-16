@@ -12,6 +12,7 @@ import Profile from "./components/Profile";
 import { LoggedInContext } from "./context/LoggedInContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Settings from "./components/Settings";
+import Reset_Password from "./components/Reset_Password";
 
 const Routes = () => {
   const { authenticated, setAuthenticated } = useContext(LoggedInContext);
@@ -27,6 +28,12 @@ const Routes = () => {
       <PublicRoute restricted={true} component={Home} exact path="/" />
       <PublicRoute restricted={true} component={Login} exact path="/login" />
       <PublicRoute restricted={true} component={SignUp} exact path="/signup" />
+      <PublicRoute
+        restricted={true}
+        path="/reset/:password_token"
+        // render={(props) => <Reset_Password {...props} />}
+        component={Reset_Password}
+      />
       {/* <PrivateRoute component={Profile} exact path="/profile" /> */}
       <PrivateRoute component={Auth} exact path="/auth" />
       <PrivateRoute component={Logout} exact path="/logout" />

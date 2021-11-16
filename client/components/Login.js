@@ -22,6 +22,7 @@ const Login = () => {
   const [userInfo, setUserInfo] = useState(null);
   const [userInfo2, setUserInfo2] = useState(null);
   const { authenticated, setAuthenticated } = useContext(LoggedInContext);
+  const [email, setEmail] = useState("");
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -43,6 +44,29 @@ const Login = () => {
         setLoginError(err.response.status);
       }
       setUserInfo(response);
+    } catch (err) {
+      return err;
+    }
+  };
+  const sendEmail = async (e) => {
+    e.preventDefault();
+    console.log("sending email");
+    try {
+      console.log("inside the try in send email");
+      const response = await axios.post(`/api/reset-password`, {
+        email,
+      });
+      console.log("response in sendEmail", response);
+      // if (response.status === 200) {
+      //   // history.push("/auth", { params: response.data });
+      //   setUserInfo(true);
+      //   setAuthenticated(true);
+      // }
+      // if (err.response.status === 401) {
+      //   console.log("401");
+      //   setLoginError(err.response.status);
+      // }
+      // setUserInfo(response);
     } catch (err) {
       return err;
     }
@@ -138,7 +162,7 @@ const Login = () => {
         <label>
           Password:
           <input
-            type="text"
+            type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
@@ -147,6 +171,14 @@ const Login = () => {
           login returning user
         </button>
       </form>
+      <p>forgot your password?</p>
+      <input
+        type="text"
+        placeholder="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+      />
+      <button onClick={sendEmail}>reset password</button>
       <h1>Google Oauth Sign In</h1>
       {/* <GoogleLogin
         clientId={process.env.GOOGLE_CLIENT_ID}
