@@ -19,7 +19,7 @@ const App = () => {
   return (
     <LoggedInContextProvider>
       <div>
-        <Navbar />
+        {/* <Navbar /> */}
         <Routes />
       </div>
     </LoggedInContextProvider>
