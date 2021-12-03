@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const Navbar = () => {
   return (
-    <div style={{ backgroundColor: "#e6f7ff", marginBottom: 5 }}>
+    <div style={{ backgroundColor: "#e6f7ff", marginBottom: 3 }}>
       <div
         style={{
           marginLeft: "70%",
