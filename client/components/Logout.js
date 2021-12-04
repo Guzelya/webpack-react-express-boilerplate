@@ -13,7 +13,10 @@ const Logout = () => {
     if (result) {
       // return <h1>logged out just now!</h1>;
       setLoggedOut(true);
-      setAuthenticated(false);
+      // setAuthenticated(false);
+      setTimeout(() => {
+        setAuthenticated(false);
+      }, 3000);
     }
   };
 

@@ -3,6 +3,8 @@ import { Route, Redirect } from "react-router-dom";
 import axios from "axios";
 // import { isLogin } from "../utils";
 import { LoggedInContext } from "../context/LoggedInContext";
+import Home from "./Home";
+import Auth from "./Auth";
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
   const { authenticated, setAuthenticated } = useContext(LoggedInContext);
@@ -33,14 +35,16 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
     authenticated,
     location
   );
+  // <Component {...props} />;
   return (
     // Show the component only when the user is logged in
     // Otherwise, redirect the user to /signin page
     <Route
       {...rest}
-      render={(props) =>
-        authenticated ? <Component {...props} /> : <Redirect to="/" />
-      }
+      render={(props) => {
+        console.log("inside route in private routing", authenticated);
+        authenticated === true ? <Auth /> : <Home />;
+      }}
     />
   );
 };

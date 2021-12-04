@@ -25,18 +25,18 @@ const Routes = () => {
     //   <Route path="/logout" component={Logout} />
     // </Switch>
     <Switch>
-      <PublicRoute restricted={true} component={Home} exact path="/" />
+      <PublicRoute restricted={false} component={Home} exact path="/" />
       <PublicRoute restricted={true} component={Login} exact path="/login" />
       <PublicRoute restricted={true} component={SignUp} exact path="/signup" />
       <PublicRoute
-        restricted={true}
+        restricted={false}
         path="/reset/:password_token"
         // render={(props) => <Reset_Password {...props} />}
         component={Reset_Password}
       />
       {/* <PrivateRoute component={Profile} exact path="/profile" /> */}
-      <PrivateRoute component={Auth} exact path="/auth" />
-      <PrivateRoute component={Logout} exact path="/logout" />
+      <ProtectedRoute component={Auth} exact path="/auth" />
+      <ProtectedRoute component={Logout} exact path="/logout" />
       <ProtectedRoute component={Profile} exact path="/profile" />
       <ProtectedRoute component={Settings} exact path="/settings" />
     </Switch>

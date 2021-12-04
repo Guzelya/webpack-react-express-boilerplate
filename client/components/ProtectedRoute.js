@@ -1,5 +1,5 @@
 import React, { Suspense, lazy, useContext, useEffect, Component } from "react";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, Redirect, Link } from "react-router-dom";
 import axios from "axios";
 // import { isLogin } from "../utils";
 import { LoggedInContext } from "../context/LoggedInContext";
@@ -49,7 +49,13 @@ const ProtectedRoutes = ({ component: Component, restricted, ...rest }) => {
   if (authenticated) {
     return <Route {...rest} render={(props) => <Component {...props} />} />;
   } else {
-    return <div> you cannot see this page please authenticate</div>;
+    return (
+      <div>
+        <p>you cannot see this page please authenticate</p>
+        <Link to="/">Go Home</Link>
+      </div>
+      // <Redirect to="/" />;
+    );
   }
 };
 
