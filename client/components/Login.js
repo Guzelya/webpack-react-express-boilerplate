@@ -71,80 +71,8 @@ const Login = () => {
       return err;
     }
   };
-  const onGoogleSuccess = async (response) => {
-    console.log("response in google", response);
-    console.log("access token", response.accessToken);
-    const { accessToken } = response;
-    try {
-      await axios.post(`api/auth/google`, { accessToken });
-      console.log("result in protected routes");
-      // if (mounted) {
-      // if (result.status === 200) {
-      //   setAuthenticated(true);
-      //   // <Redirect to="/auth" />;
-      //   // setLoggedIn(true);
-      //   // newValue = true;
-      //   // console.log("do we get here?", result.status, newValue);
-      //   return result;
-      // }
-      // }
-    } catch (err) {
-      console.log("not logged in", error);
-    }
-  };
-  const onGoogleFailure = (response) => {
-    console.log(" failure to login", response);
-  };
-  const callGoogleOauth = async () => {
-    // const headers = {
-    //   "Content-Type": "text/plain",
-    // };
-    // const headers = {
-    //   "Content-Type": "application/json;charset=UTF-8",
-    //   "Access-Control-Allow-Origin": "*",
-    // };
-    try {
-      // window.open("http://localhost:3002/api/auth/google", "_self");
-      await axios.get(
-        `api/auth/google`
-        // { headers }
-        // headers: {
-        //   "Access-Control-Allow-Origin": "*",
-        //   "Access-Control-Allow-Headers": "*",
-        //   "Access-Control-Allow-Methods": "*",
-        // },
-      );
-      // console.log("result for google oauth2", result);
-    } catch (err) {
-      console.log("failued to connect to OAuth2", err);
-      return err;
-    }
-  };
-  const callGoogleOauth1 = () => {
+  const callGoogleOauth = () => {
     window.open("http://localhost:3002/api/auth/google", "_self");
-    // if (window.trustedTypes && trustedTypes.createPolicy) {
-    //   // Feature testing
-    //   const myPolicy = trustedTypes.createPolicy("myPolicy", {
-    //     createHTML: (string) => string.replace(/\</g, "&lt;"),
-    //   });
-    //   myPolicy.createHTML(
-    //     window.open("http://localhost:3002/api/auth/google", "_self")
-    //   );w
-    //   DOMPurify.sanitize(
-    //     window.open("http://localhost:3002/api/auth/google", "_self")
-    //   );
-    // }
-    // return window.open("http://localhost:3002/api/auth/google", "_self");
-    // // let clean = DOMPurify.sanitize(window);
-    // return (
-    //   <p
-    //     dangerouslySetInnerHTML={{
-    //       __html: DOMPurify.sanitize(
-    //         window.open("http://localhost:3002/api/auth/google", "_self")
-    //       ),
-    //     }}
-    //   ></p>
-    // );
   };
   const callFacebookLogin = () => {
     window.open("http://localhost:3002/api/auth/facebook", "_self");
@@ -193,7 +121,7 @@ const Login = () => {
         // SameSite="None"
         // SameSite="Strict"
       /> */}
-      <button onClick={callGoogleOauth1}>google login</button>
+      <button onClick={callGoogleOauth}>google login</button>
       <button onClick={callFacebookLogin}>facebook login</button>
 
       {/* <a href="http://localhost:3002/api/auth/google">Log in to google</a> */}

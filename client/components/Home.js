@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { LoggedInContext } from "../context/LoggedInContext";
 // import { Carousel } from react-easy-carousel;
 import slide1 from "../../assets/blood-ampules-10.jpeg";
@@ -13,7 +13,7 @@ import TestProject from "./TestProject";
 
 const Home = () => {
   const { authenticated } = useContext(LoggedInContext);
-  console.log("authenticated", authenticated);
+  console.log("authenticated home screen", authenticated);
   const CarouselImages = [
     {
       title: "Blood Donors",

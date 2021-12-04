@@ -123,7 +123,7 @@ module.exports = function (passport) {
           // should create new entry facebookId
           const User1 = await User.findOne({
             where: {
-              username: profile.id,
+              facebookId: profile.id,
             },
           });
           // if user did not register with the app
