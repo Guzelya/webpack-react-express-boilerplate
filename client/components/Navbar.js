@@ -37,12 +37,12 @@ const Navbar = () => {
         >
           HOME
         </Link>
-        <Link to="/login" style={{ marginRight: "3%" }}>
+        {/* <Link to="/login" style={{ marginRight: "3%" }}>
           Login
         </Link>
         <Link to="/signUp" style={{ marginRight: "3%" }}>
           Register
-        </Link>
+        </Link> */}
         {authenticated ? (
           // <div>
           <>
@@ -53,7 +53,16 @@ const Navbar = () => {
               Log out
             </Link>
           </>
-        ) : null}
+        ) : (
+          <>
+            <Link to="/login" style={{ marginRight: "3%" }}>
+              Login
+            </Link>
+            <Link to="/signUp" style={{ marginRight: "3%" }}>
+              Register
+            </Link>
+          </>
+        )}
       </div>
     </div>
   );
